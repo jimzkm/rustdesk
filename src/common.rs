@@ -2492,7 +2492,17 @@ pub fn rustdesk_interval(i: Interval) -> ThrottledInterval {
     ThrottledInterval::new(i)
 }
 
+/// Brand name of this build (GSS-Remote PC). It is also used for the install folder,
+/// the executable name and the URI scheme, so it must not contain spaces.
+pub const GSS_APP_NAME: &str = "GSS-Remote-PC";
+
+#[inline]
+fn apply_gss_brand() {
+    *config::APP_NAME.write().unwrap() = GSS_APP_NAME.to_owned();
+}
+
 pub fn load_custom_client() {
+    apply_gss_brand();
     #[cfg(debug_assertions)]
     if let Ok(data) = std::fs::read_to_string("./custom.txt") {
         read_custom_client(data.trim());
@@ -2591,6 +2601,7 @@ pub fn get_dst_align_rgba() -> usize {
 }
 
 pub fn read_custom_client(config: &str) {
+    apply_gss_brand();
     let Ok(data) = decode64(config) else {
         log::error!("Failed to decode custom client config");
         return;
