@@ -1,6 +1,6 @@
 # Builds the Windows x64 installer of GSS-Remote PC (rebranded RustDesk).
 # Runs on every push to the gss-branding branch, or manually from the Actions tab.
-# Output: a GitHub Release "gss-<version>" with the setup .exe and .msi, plus workflow artifacts.
+# Output: a GitHub Release "gss-<version>-r<run number>" with the setup .exe and .msi, plus workflow artifacts.
 name: Build GSS-Remote PC (Windows)
 
 on:
@@ -195,8 +195,8 @@ jobs:
         uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v1
         with:
           prerelease: true
-          tag_name: gss-${{ env.VERSION }}
-          name: GSS-Remote PC ${{ env.VERSION }}
+          tag_name: gss-${{ env.VERSION }}-r${{ github.run_number }}
+          name: GSS-Remote PC ${{ env.VERSION }} (build ${{ github.run_number }})
           target_commitish: ${{ github.sha }}
           files: |
             ./Output/*.exe
